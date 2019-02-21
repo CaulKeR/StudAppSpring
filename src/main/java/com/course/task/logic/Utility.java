@@ -1,7 +1,6 @@
 package com.course.task.logic;
 
 import org.springframework.stereotype.Component;
-
 import java.util.regex.Pattern;
 
 @Component
