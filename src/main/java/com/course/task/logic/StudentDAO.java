@@ -1,9 +1,14 @@
 package com.course.task.logic;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
+@Component
 public class StudentDAO extends ConnectionManager implements AbstractDAOStudent, AutoCloseable {
 	
 	Connection connection = null;

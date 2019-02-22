@@ -6,8 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import com.course.task.logic.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+@Controller
+@RequestMapping(value = "/servlet")
 public class Servlet extends HttpServlet {
 
     @Autowired
@@ -20,6 +26,7 @@ public class Servlet extends HttpServlet {
     private MarkDAO markDao;
 
     @Override
+    @GetMapping
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             processRequest(req, resp);
@@ -31,6 +38,7 @@ public class Servlet extends HttpServlet {
     }
 
     @Override
+    @PostMapping
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             processRequest(req, resp);

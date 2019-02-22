@@ -1,5 +1,18 @@
 <web-app>
 
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>
+      org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+    </param-value>
+  </context-param>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      com.course.task.logic.SpringConfig
+    </param-value>
+  </context-param>
+
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -12,7 +25,7 @@
  
   <servlet>
     <servlet-name>servlet</servlet-name>
-    <servlet-class>com.course.task.web.Servlet</servlet-class>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextClass</param-name>
       <param-value>
@@ -22,7 +35,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>servlet</servlet-name>
-    <url-pattern>/servlet</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
   
   <resource-ref>
