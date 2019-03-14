@@ -1,121 +1,127 @@
-package com.course.task.logic; 
+package com.course.task.logic;
 
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "MARKS")
 public class MarkDTO {
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private long studentId;
-	private long subjectId;
-	private int mark;
-	private String date;
-	private String name;
-	private String firstName;
-	private String lastName;
+
+	@Column(name = "LEARNING_SUBJECT_ID")
 	private long learningSubjectId;
+
+	@Column(name = "MARK")
+	private int mark;
+
+	@Column(name = "DATE_OF_RECEIVING")
+	private Date date;
+
+	@Transient
+	private String name;
+
+	@Transient
+    private String firstName;
+
+	@Transient
+	private String lastName;
 
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id){
 		this.id = id;
 	}
-	public long getStudentId() {
-		return studentId;
-	}
-	public void setStudentId(long studentId){
-		this.studentId = studentId;
-	}
-	public long getSubjectId() {
-		return subjectId;
-	}
-	public void setSubjectId(long subjectId){
-		this.subjectId = subjectId;
-	}
-	public int getMark() {
-		return mark;
-	}
-	public void setMark(int mark){
-		this.mark = mark;
-	}
-	public String getDate(){
-		return date;
-	}
-	public void setDateInYYYYMMDD(String date){
-		this.date = date;
-	}
-	public String getName(){
-		return name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-	public String getFirstName(){
-		return firstName;
-	}
-	public void setFirstName(String firstName){
-		this.firstName = firstName;
-	}
-	public String getLastName(){
-		return lastName;
-	}
-	public void setLastName(String lastName){
-		this.lastName = lastName;
-	}
+
 	public long getLearningSubjectId(){
 		return learningSubjectId;
 	}
+
 	public void setLearningSubjectId(long learningSubjectId){
 		this.learningSubjectId = learningSubjectId;
+	}
+
+	public int getMark() {
+		return mark;
+	}
+
+	public void setMark(int mark){
+		this.mark = mark;
+	}
+
+	public Date getDate(){
+		return date;
+	}
+
+	public void setDateInYYYYMMDD(Date date){
+		this.date = date;
 	}
 
 	public MarkDTO () throws IllegalArgumentException{
 	}
 
-	public MarkDTO (long learningSubjectId, int mark, String date) throws IllegalArgumentException{
+	public MarkDTO (long learningSubjectId, int mark, Date date) throws IllegalArgumentException{
 		this.learningSubjectId = learningSubjectId;
 		this.mark = mark;
-		if(date.charAt(4) == '-' &&  date.charAt(7) == '-') {
-			setDateInYYYYMMDD(date);
-		} else {
-			throw new IllegalArgumentException("Incorrect date format! Use only YYYY-MM-DD");
-		}
+		setDateInYYYYMMDD(date);
 	}
 	
-	public MarkDTO (long id, String name, int mark, String date) throws IllegalArgumentException{
+	public MarkDTO (long id, String name, int mark, Date date) throws IllegalArgumentException{
 		this.id = id;
 		this.name = name;
 		this.mark = mark;
-		if(date.charAt(4) == '-' &&  date.charAt(7) == '-') {
-			setDateInYYYYMMDD(date);
-		} else {
-			throw new IllegalArgumentException("Incorrect date format! Use only YYYY-MM-DD");
-		}
+		setDateInYYYYMMDD(date);
 	}
 
-	public MarkDTO (long id, long learningSubjectId, int mark, String date) throws IllegalArgumentException{
+	public MarkDTO (long id, long learningSubjectId, int mark, Date date) throws IllegalArgumentException{
 		this.id = id;
 		this.learningSubjectId = learningSubjectId;
 		this.mark = mark;
-		if(date.charAt(4) == '-' &&  date.charAt(7) == '-') {
-			setDateInYYYYMMDD(date);
-		} else {
-			throw new IllegalArgumentException("Incorrect date format! Use only YYYY-MM-DD");
-		}
+		setDateInYYYYMMDD(date);
 	}
 	
-	public MarkDTO (long id, String firstName, String lastName, int mark, String date) throws IllegalArgumentException{
+	public MarkDTO (long id, String firstName, String lastName, int mark, Date date) throws IllegalArgumentException{
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mark = mark;
-		if(date.charAt(4) == '-' &&  date.charAt(7) == '-') {
-			setDateInYYYYMMDD(date);
-		} else {
-			throw new IllegalArgumentException("Incorrect date format! Use only YYYY-MM-DD");
-		}
+		setDateInYYYYMMDD(date);
 	}
 
 	public MarkDTO (long id) throws IllegalArgumentException{
 		this.id = id;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }

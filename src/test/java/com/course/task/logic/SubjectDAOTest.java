@@ -1,10 +1,8 @@
 package com.course.task.logic;
 
 import com.ibatis.common.jdbc.ScriptRunner;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -13,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.testng.Assert.*;
 
 public class SubjectDAOTest extends ConnectionManager {
@@ -23,31 +20,7 @@ public class SubjectDAOTest extends ConnectionManager {
 
     @BeforeClass
     public void setUp() {
-        subjectDao = new SubjectDAO();
-    }
-
-    @AfterClass
-    public void tearDown() throws Exception {
-        try {
-            subjectDao.close();
-        } catch (Exception e) {
-            throw new Exception(e);
-        } finally {
-            conn.close();
-        }
-    }
-
-    @Test(dependsOnMethods = {"getAll"})
-    public void close() throws Exception {
-        SubjectDAO subjDaoTest = new SubjectDAO();
-        assertNull(subjDaoTest.connection);
-        assertNull(subjDaoTest.getAllPs);
-        subjDaoTest.getAll();
-        assertNotNull(subjDaoTest.connection);
-        assertNotNull(subjDaoTest.getAllPs);
-        subjDaoTest.close();
-        assertTrue(subjDaoTest.getAllPs.isClosed());
-        assertTrue(subjDaoTest.connection.isClosed());
+        subjectDao = new SubjectDAO("connectionForTests");
     }
 
     @Test
@@ -68,9 +41,10 @@ public class SubjectDAOTest extends ConnectionManager {
 
     @Test(dependsOnMethods = {"getAll"})
     public void remove() throws Exception {
-        conn = getConnection(true);
+        conn = getConnection();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/insertSubjectScript.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/insertSubjectScript.sql"))));
         subjectDao.remove(100L);
         List<SubjectDTO> list = subjectDao.getAll();
         for (SubjectDTO subject : list) {
@@ -80,16 +54,18 @@ public class SubjectDAOTest extends ConnectionManager {
 
     @Test(dependsOnMethods = {"getSubjectById"})
     public void update() throws Exception {
-        conn = getConnection(true);
+        conn = getConnection();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/insertSubjectScript.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/insertSubjectScript.sql"))));
         SubjectDTO expected = new SubjectDTO(100L, "TEST");
         assertNotEquals(expected, subjectDao.getSubjectById(100L));
         subjectDao.update(expected);
         SubjectDTO actual = subjectDao.getSubjectById(100L);
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getName(), actual.getName());
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/removeSubjectScript.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/removeSubjectScript.sql"))));
     }
 
     @Test
@@ -105,23 +81,27 @@ public class SubjectDAOTest extends ConnectionManager {
 
     @Test
     public void getSubjectById() throws Exception {
-        conn = getConnection(true);
+        conn = getConnection();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/insertSubjectScript.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/insertSubjectScript.sql"))));
         SubjectDTO subject = subjectDao.getSubjectById(100L);
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/removeSubjectScript.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/removeSubjectScript.sql"))));
         assertEquals(subject.getId(), 100L);
         assertEquals(subject.getName(), "Java");
     }
 
     @Test
     public void getAllSubjectsIdLearnedByStudent() throws Exception {
-        conn = getConnection(true);
+        conn = getConnection();
         ScriptRunner runner = new ScriptRunner(conn, false, false);
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/getAllSubjectsIdLearnedByStudent.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/getAllSubjectsIdLearnedByStudent.sql"))));
         List<SubjectDTO> expected = subjectDao.getAllSubjectsIdLearnedByStudent(1L);
         List<SubjectDTO> actual = getTable("TEST");
-        runner.runScript(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/dropTestTable.sql"))));
+        runner.runScript(new BufferedReader(new InputStreamReader(getClass()
+                    .getResourceAsStream("/dropTestTable.sql"))));
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
             assertEquals(expected.get(i).getId(), actual.get(i).getId());
@@ -134,7 +114,7 @@ public class SubjectDAOTest extends ConnectionManager {
         PreparedStatement getLast = null;
         ResultSet resultSet = null;
         try {
-            conn = getConnection(true);
+            conn = getConnection();
             getLast = conn.prepareStatement("SELECT * FROM SUBJECTS ORDER BY ID DESC LIMIT 1;");
             resultSet = getLast.executeQuery();
             resultSet.next();
@@ -165,12 +145,13 @@ public class SubjectDAOTest extends ConnectionManager {
         PreparedStatement getLast = null;
         ResultSet resultSet = null;
         try {
-            conn = getConnection(true);
+            conn = getConnection();
             getLast = conn.prepareStatement("SELECT * FROM " + tableTitle + ";");
             resultSet = getLast.executeQuery();
             List<SubjectDTO> subjectList = new ArrayList<>();
             while(resultSet.next()) {
-                SubjectDTO subject = new SubjectDTO(resultSet.getLong("ID"), resultSet.getString("NAME"));
+                SubjectDTO subject = new SubjectDTO(resultSet.getLong("ID"),
+                            resultSet.getString("NAME"));
                 subjectList.add(subject);
             }
             return subjectList;

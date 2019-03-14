@@ -203,7 +203,8 @@ public class Servlet extends HttpServlet {
             req.setAttribute("subjectId", Long.parseLong(req.getParameter("subjectId"), 10));
             req.getRequestDispatcher("/AssignedSubjectForStudent.jsp").forward(req, resp);
         } catch (DAOException e) {
-            req.setAttribute("ErrorMessage", "Something goes wrong when we try to assign subject for student. Please try this operation again");
+            req.setAttribute("ErrorMessage", "Something goes wrong when we try to assign subject for student. " +
+                            "Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet assignSubjectForStudent method!", e);
@@ -226,14 +227,16 @@ public class Servlet extends HttpServlet {
                 if (utility.checkName(firstName)) {
                     studentDto.setFirstName(firstName);
                 } else {
-                    req.setAttribute("incorrectEnter", "Student first name and last name must consist at least one letter!");
+                    req.setAttribute("incorrectEnter", "Student first name and last name must consist at least" +
+                                    " one letter!");
                     req.setAttribute("student", studentDto);
                     req.getRequestDispatcher("/editStudent.jsp").forward(req, resp);
                 }
                 if (utility.checkName(lastName)) {
                     studentDto.setLastName(lastName);
                 } else {
-                    req.setAttribute("incorrectEnter", "Student first name and last name must consist at least one letter!");
+                    req.setAttribute("incorrectEnter", "Student first name and last name must consist at least" +
+                                    " one letter!");
                     req.setAttribute("student", studentDto);
                     req.getRequestDispatcher("/editStudent.jsp").forward(req, resp);
                 }
@@ -269,7 +272,8 @@ public class Servlet extends HttpServlet {
             req.setAttribute("MarkList", markDao.getAllByStudentId(studentId));
             req.getRequestDispatcher("/FullStudentInfo.jsp").forward(req, resp);
         } catch (DAOException e) {
-            req.setAttribute("ErrorMessage", "Something goes wrong when we try to show full information about student. Please try this operation again");
+            req.setAttribute("ErrorMessage", "Something goes wrong when we try to show full information about" +
+                            " student. Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet fullStudentInfo method!", e);
@@ -286,7 +290,8 @@ public class Servlet extends HttpServlet {
             req.setAttribute("MarkList", markDao.getAllBySubjectId(subjectId));
             req.getRequestDispatcher("/FullSubjectInfo.jsp").forward(req, resp);
         } catch (DAOException e) {
-            req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all all information about subject. Please try this operation again");
+            req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all all information" +
+                            " about subject. Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet fullSubjectInfo method!", e);
@@ -302,7 +307,8 @@ public class Servlet extends HttpServlet {
             req.setAttribute("studentId", studentId);
             req.getRequestDispatcher("/SelectSubjectToAssign.jsp").forward(req, resp);
         } catch (DAOException e) {
-            req.setAttribute("ErrorMessage", "Something goes wrong when we try to select subject to assign. Please try this operation again");
+            req.setAttribute("ErrorMessage", "Something goes wrong when we try to select subject to assign." +
+                            " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet selectSubjectToAssign method!", e);

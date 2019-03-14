@@ -1,6 +1,5 @@
 package com.course.task.logic;
 
-
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
