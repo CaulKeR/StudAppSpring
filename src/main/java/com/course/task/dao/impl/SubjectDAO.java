@@ -1,5 +1,9 @@
-package com.course.task.logic;
+package com.course.task.dao.impl;
 
+import com.course.task.dao.AbstractDAOSubject;
+import com.course.task.dto.SubjectDTO;
+import com.course.task.logic.ConnectionManager;
+import com.course.task.dao.DAOException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -9,11 +13,11 @@ public class SubjectDAO implements AbstractDAOSubject {
 
 	private ConnectionManager cm;
 
-	SubjectDAO(String connection) {
+	public SubjectDAO(String connection) {
 		cm = new ConnectionManager(connection);
 	}
 
-	SubjectDAO() {
+	public SubjectDAO() {
 		cm = new ConnectionManager();
 	}
 

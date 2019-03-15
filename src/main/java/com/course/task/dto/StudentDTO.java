@@ -1,4 +1,4 @@
-package com.course.task.logic;
+package com.course.task.dto;
 
 import javax.persistence.*;
 

@@ -1,11 +1,14 @@
 package com.course.task.logic;
 
+import com.course.task.dao.impl.MarkDAO;
+import com.course.task.dao.impl.StudentDAO;
+import com.course.task.dao.impl.SubjectDAO;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({"com.course.task.web", "com.course.task.logic"})
+@ComponentScan({"com.course.task.web", "com.course.task.dao.impl", "com.course.task.logic"})
 public class SpringConfig {
 
     @Bean
@@ -32,5 +35,3 @@ public class SpringConfig {
     }
 
 }
-
-

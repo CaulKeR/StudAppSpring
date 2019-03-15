@@ -5,7 +5,7 @@
 </head>
 <body>
 	<jsp:include page="/index.jsp"/>
-	<%@ page import="com.course.task.logic.StudentDTO" %>
+	<%@ page import="com.course.task.dto.StudentDTO" %>
 	<% if(request.getAttribute("studentId") == null) { 
 		System.out.println("Request in deleteStudent.jsp is null!");
 	}%>

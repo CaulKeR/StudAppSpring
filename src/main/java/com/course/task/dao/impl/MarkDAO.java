@@ -1,5 +1,9 @@
-package com.course.task.logic; 
+package com.course.task.dao.impl;
 
+import com.course.task.dao.AbstractDAOMark;
+import com.course.task.dto.MarkDTO;
+import com.course.task.logic.ConnectionManager;
+import com.course.task.dao.DAOException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
@@ -11,11 +15,11 @@ public class MarkDAO implements AbstractDAOMark {
 
 	private ConnectionManager cm;
 
-	MarkDAO(String connection) {
+	public MarkDAO(String connection) {
 		cm = new ConnectionManager(connection);
 	}
 
-	MarkDAO() {
+	public MarkDAO() {
 		cm = new ConnectionManager();
 	}
 

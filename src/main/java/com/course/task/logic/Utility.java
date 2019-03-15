@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 public class Utility {
 	
 	private Pattern p = Pattern.compile("[a-zA-Z]+");
-	
 	public boolean checkName(String name) {
         return p.matcher(name).find();
     }

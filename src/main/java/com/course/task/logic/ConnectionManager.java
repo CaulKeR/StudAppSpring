@@ -1,5 +1,10 @@
 package com.course.task.logic;
 
+import com.course.task.dao.DAOException;
+import com.course.task.dto.LearningSubjectsDTO;
+import com.course.task.dto.MarkDTO;
+import com.course.task.dto.StudentDTO;
+import com.course.task.dto.SubjectDTO;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,11 +20,11 @@ public class ConnectionManager{
 	private SessionFactory sessionFactory = null;
 	private Connection connection;
 
-	ConnectionManager(String connection){
+	public ConnectionManager(String connection){
 		buildSessionFactory(connection);
 	}
 
-	ConnectionManager(){
+	public ConnectionManager(){
 		buildSessionFactory("connection");
 	}
 
@@ -28,7 +33,7 @@ public class ConnectionManager{
 			Configuration configuration = new Configuration();
 			Properties properties = new Properties();
 			properties.load(Objects.requireNonNull(ConnectionManager.class.getClassLoader()
-								.getResourceAsStream("\\" + connProperties + ".properties")));
+					.getResourceAsStream("\\" + connProperties + ".properties")));
 			configuration.setProperties(properties);
 			configuration.addAnnotatedClass(StudentDTO.class);
 			configuration.addAnnotatedClass(SubjectDTO.class);
@@ -52,7 +57,7 @@ public class ConnectionManager{
 		if (connection == null) {
 			try {
 				Properties properties = new Properties();
-				properties.load(Objects.requireNonNull(com.course.task.logic.ConnectionManager.class
+				properties.load(Objects.requireNonNull(ConnectionManager.class
 						.getClassLoader().getResourceAsStream("\\connectionForTests.properties")));
 				Class.forName(properties.getProperty("hibernate.connection.driver_class")).getDeclaredConstructor();
 				connection = DriverManager.getConnection(properties.getProperty("hibernate.connection.url"),

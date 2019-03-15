@@ -11,7 +11,7 @@
 <body link="#000000" vlink="#000000">
 	<jsp:include page="/index.jsp"/>
 	<%@ page import="java.util.List" %>
-	<%@ page import="com.course.task.logic.SubjectDTO" %>
+	<%@ page import="com.course.task.dto.SubjectDTO" %>
 	<h1>Subjects list</h1>
 	<table border="5" cellpadding="4" cellspacing="0">
 	<% if(request.getAttribute("SubjectsList") == null) {

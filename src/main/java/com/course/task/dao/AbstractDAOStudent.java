@@ -1,5 +1,6 @@
-package com.course.task.logic;
+package com.course.task.dao;
 
+import com.course.task.dto.StudentDTO;
 import java.util.List;
 
 public interface AbstractDAOStudent {

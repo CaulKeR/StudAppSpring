@@ -1,5 +1,6 @@
-package com.course.task.logic; 
+package com.course.task.dao;
 
+import com.course.task.dto.MarkDTO;
 import java.util.List;
 
 public interface AbstractDAOMark {

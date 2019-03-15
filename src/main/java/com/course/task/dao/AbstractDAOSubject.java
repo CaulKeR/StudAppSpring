@@ -1,4 +1,6 @@
-package com.course.task.logic;
+package com.course.task.dao;
+
+import com.course.task.dto.SubjectDTO;
 
 import java.util.List;
 

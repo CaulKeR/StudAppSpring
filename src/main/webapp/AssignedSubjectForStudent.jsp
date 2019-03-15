@@ -5,8 +5,8 @@
 </head>
 <body>
 	<jsp:include page="/index.jsp"/>
-	<%@ page import="com.course.task.logic.StudentDTO" %>
-	<%@ page import="com.course.task.logic.SubjectDTO" %>
+	<%@ page import="com.course.task.dto.StudentDTO" %>
+	<%@ page import="com.course.task.dto.SubjectDTO" %>
 	<% if(request.getAttribute("studentId") == null || request.getAttribute("subjectId") == null) { 
 		System.out.println("Request in AssignedSubjectForStudent.jsp is null!");
 	}%>

@@ -6,9 +6,9 @@
 <body
 	<jsp:include page="/index.jsp"/>
 	<%@ page import="java.util.List" %>
-	<%@ page import="com.course.task.logic.StudentDTO" %>
-	<%@ page import="com.course.task.logic.SubjectDTO" %>
-	<%@ page import="com.course.task.logic.MarkDTO" %>
+	<%@ page import="com.course.task.dto.StudentDTO" %>
+	<%@ page import="com.course.task.dto.SubjectDTO" %>
+	<%@ page import="com.course.task.dto.MarkDTO" %>
 	<b>Main subject information:</b>
 	<table border="5" cellpadding="4" cellspacing="0">
 	<% if(request.getAttribute("subject") == null || request.getAttribute("fullSubjectInfoList") == null ||

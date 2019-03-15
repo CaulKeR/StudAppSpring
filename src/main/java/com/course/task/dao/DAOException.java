@@ -1,4 +1,4 @@
-package com.course.task.logic;
+package com.course.task.dao;
 
 public class DAOException extends Exception {
 	

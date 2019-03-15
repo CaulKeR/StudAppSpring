@@ -5,7 +5,7 @@
 </head>
 <body>
 	<jsp:include page="/index.jsp"/>
-	<%@ page import="com.course.task.logic.SubjectDTO" %>
+	<%@ page import="com.course.task.dto.SubjectDTO" %>
 	<B>Currect subject info:</B>
 	<table border=5>
 	<% if( request.getAttribute("subject") == null) {

@@ -1,5 +1,8 @@
 package com.course.task.logic;
 
+import com.course.task.dao.DAOException;
+import com.course.task.dao.impl.MarkDAO;
+import com.course.task.dto.MarkDTO;
 import com.ibatis.common.jdbc.ScriptRunner;
 import org.testng.annotations.*;
 import java.io.BufferedReader;

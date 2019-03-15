@@ -4,7 +4,13 @@ import java.io.*;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-import com.course.task.logic.*;
+import com.course.task.dao.impl.MarkDAO;
+import com.course.task.dao.impl.StudentDAO;
+import com.course.task.dao.impl.SubjectDAO;
+import com.course.task.dto.StudentDTO;
+import com.course.task.dto.SubjectDTO;
+import com.course.task.dao.DAOException;
+import com.course.task.logic.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +37,9 @@ public class Servlet extends HttpServlet {
         try {
             processRequest(req, resp);
         } catch (Exception e) {
-            req.setAttribute("ErrorMessage", "Something goes wrong when we try to" +
-                                            " show all students. Please try this operation again");
+            e.printStackTrace();
+            req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all students. " +
+                    "Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         }
     }
@@ -44,7 +51,7 @@ public class Servlet extends HttpServlet {
             processRequest(req, resp);
         } catch (Exception e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all students." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         }
     }
@@ -103,9 +110,8 @@ public class Servlet extends HttpServlet {
             req.setAttribute("StudentsList", studentDao.getAll());
             req.getRequestDispatcher("/showAllStudents.jsp").forward(req, resp);
         } catch (DAOException e) {
-            e.printStackTrace();
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all students." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet showAllStudents method!", e);
@@ -121,7 +127,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/editStudent.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to edit student." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/jsp/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet editStudent method!", e);
@@ -138,7 +144,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/deleteStudent.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to delete student." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet deleteStudent method!", e);
@@ -153,7 +159,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/showAllSubjects.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all subjects." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet showAllSubjects method!", e);
@@ -169,7 +175,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/editSubject.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to edit subject." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet editSubject method!", e);
@@ -186,7 +192,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/deleteSubject.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to delete subject." +
-                                                    " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet deleteSubject method!", e);
@@ -204,7 +210,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/AssignedSubjectForStudent.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to assign subject for student. " +
-                            "Please try this operation again");
+                    "Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet assignSubjectForStudent method!", e);
@@ -228,7 +234,7 @@ public class Servlet extends HttpServlet {
                     studentDto.setFirstName(firstName);
                 } else {
                     req.setAttribute("incorrectEnter", "Student first name and last name must consist at least" +
-                                    " one letter!");
+                            " one letter!");
                     req.setAttribute("student", studentDto);
                     req.getRequestDispatcher("/editStudent.jsp").forward(req, resp);
                 }
@@ -236,7 +242,7 @@ public class Servlet extends HttpServlet {
                     studentDto.setLastName(lastName);
                 } else {
                     req.setAttribute("incorrectEnter", "Student first name and last name must consist at least" +
-                                    " one letter!");
+                            " one letter!");
                     req.setAttribute("student", studentDto);
                     req.getRequestDispatcher("/editStudent.jsp").forward(req, resp);
                 }
@@ -273,7 +279,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/FullStudentInfo.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to show full information about" +
-                            " student. Please try this operation again");
+                    " student. Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet fullStudentInfo method!", e);
@@ -291,7 +297,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/FullSubjectInfo.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to show all all information" +
-                            " about subject. Please try this operation again");
+                    " about subject. Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet fullSubjectInfo method!", e);
@@ -308,7 +314,7 @@ public class Servlet extends HttpServlet {
             req.getRequestDispatcher("/SelectSubjectToAssign.jsp").forward(req, resp);
         } catch (DAOException e) {
             req.setAttribute("ErrorMessage", "Something goes wrong when we try to select subject to assign." +
-                            " Please try this operation again");
+                    " Please try this operation again");
             req.getRequestDispatcher("/Error.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException("Error in Servlet selectSubjectToAssign method!", e);
