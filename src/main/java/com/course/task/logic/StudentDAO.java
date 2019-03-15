@@ -2,7 +2,6 @@ package com.course.task.logic;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,10 +20,12 @@ public class StudentDAO implements AbstractDAOStudent {
 	public void insert(StudentDTO student) throws DAOException {
 		
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.save(student);
-			session.getTransaction().commit();
+			if (student != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
+				session.save(student);
+				session.getTransaction().commit();
+			}
 		} catch(Exception e) {
 			throw new DAOException("Error in DAOStudent insert method!", e);
 		}
@@ -34,12 +35,12 @@ public class StudentDAO implements AbstractDAOStudent {
 	public void remove(StudentDTO student) throws DAOException {
 		
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
 			if (student != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
 				session.delete(student);
+				session.getTransaction().commit();
 			}
-			session.getTransaction().commit();
 		} catch(Exception  e) {
 			throw new DAOException("Error in DAOStudent remove method!", e);
 		}
@@ -65,12 +66,12 @@ public class StudentDAO implements AbstractDAOStudent {
 	public void update(StudentDTO student) throws DAOException {
 
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
 			if (student != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
 				session.update(student);
+				session.getTransaction().commit();
 			}
-			session.getTransaction().commit();
 		} catch(Exception e) {
 			throw new DAOException("Error in DAOStudent update method!", e);
 		}
@@ -82,7 +83,7 @@ public class StudentDAO implements AbstractDAOStudent {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			List<StudentDTO> list = (List<StudentDTO>) session.createQuery("FROM StudentDTO").list();
+			List<StudentDTO> list = session.createQuery("FROM StudentDTO", StudentDTO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {
@@ -96,8 +97,8 @@ public class StudentDAO implements AbstractDAOStudent {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			StudentDTO student = (StudentDTO) session.createQuery("FROM StudentDTO student WHERE student.id = " + id)
-					.uniqueResult();
+			StudentDTO student = session.createQuery("FROM StudentDTO student WHERE student.id = " + id,
+					StudentDTO.class).uniqueResult();
 			session.getTransaction().commit();
 			return student;
 		} catch (Exception e) {
@@ -111,17 +112,9 @@ public class StudentDAO implements AbstractDAOStudent {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			List<StudentDTO> list = new ArrayList<>();
-			List<Object[]> objects = (List<Object[]>) session.createQuery("SELECT student.id, student.firstName, " +
-					"student.lastName FROM StudentDTO student, LearningSubjectsDTO LS WHERE LS.subjectId " +
-					"= " + subjectId +" AND LS.studentId = student.id").list();
-			for (Object[] object : objects) {
-				long id = (long) object[0];
-				String firstName = (String) object[1];
-				String lastName = (String) object[2];
-				StudentDTO student = new StudentDTO(id, firstName, lastName);
-				list.add(student);
-			}
+			List<StudentDTO> list = session.createQuery("SELECT new StudentDTO(student.id, student.firstName, " +
+					"student.lastName) FROM StudentDTO student, LearningSubjectsDTO LS WHERE LS.subjectId = " +
+					subjectId +" AND LS.studentId = student.id", StudentDTO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {

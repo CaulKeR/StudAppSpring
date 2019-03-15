@@ -3,7 +3,6 @@ package com.course.task.logic;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.util.ArrayList;
 
 @Component
 public class SubjectDAO implements AbstractDAOSubject {
@@ -21,10 +20,12 @@ public class SubjectDAO implements AbstractDAOSubject {
 	public void insert(SubjectDTO subject) throws DAOException {
 		
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.save(subject);
-			session.getTransaction().commit();
+			if (subject != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
+				session.save(subject);
+				session.getTransaction().commit();
+			}
 		} catch(Exception e) {
 			throw new DAOException("Error in DAOSubject insert method!", e);
 		}
@@ -34,12 +35,12 @@ public class SubjectDAO implements AbstractDAOSubject {
 	public void remove(SubjectDTO subject) throws DAOException {
 
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
 			if (subject != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
 				session.delete(subject);
+				session.getTransaction().commit();
 			}
-			session.getTransaction().commit();
 		} catch(Exception  e) {
 			throw new DAOException("Error in DAOSubject remove method!", e);
 		}
@@ -65,12 +66,12 @@ public class SubjectDAO implements AbstractDAOSubject {
 	public void update(SubjectDTO subject) throws DAOException {
 
 		try {
-			Session session = cm.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
 			if (subject != null) {
+				Session session = cm.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
 				session.update(subject);
+				session.getTransaction().commit();
 			}
-			session.getTransaction().commit();
 		} catch(Exception e) {
 			throw new DAOException("Error in DAOSubject update method!", e);
 		}
@@ -82,7 +83,7 @@ public class SubjectDAO implements AbstractDAOSubject {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			List<SubjectDTO> list = (List<SubjectDTO>) session.createQuery("FROM SubjectDTO").list();
+			List<SubjectDTO> list = session.createQuery("FROM SubjectDTO", SubjectDTO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {
@@ -96,8 +97,8 @@ public class SubjectDAO implements AbstractDAOSubject {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			SubjectDTO subject = (SubjectDTO) session.createQuery("FROM SubjectDTO subject WHERE subject.id = " + id)
-					.uniqueResult();
+			SubjectDTO subject = session.createQuery("FROM SubjectDTO subject WHERE subject.id = " + id,
+					SubjectDTO.class).uniqueResult();
 			session.getTransaction().commit();
 			return subject;
 		} catch (Exception e) {
@@ -111,16 +112,9 @@ public class SubjectDAO implements AbstractDAOSubject {
 		try {
 			Session session = cm.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			List<SubjectDTO> list = new ArrayList<SubjectDTO>();
-			List<Object[]> objects = (List<Object[]>) session.createQuery("SELECT subject.id, subject.name " +
-					"FROM SubjectDTO subject, LearningSubjectsDTO LS WHERE LS.studentId " +
-					"= " + studentId +" AND LS.subjectId = subject.id").list();
-			for (Object[] object : objects) {
-				long id = (long) object[0];
-				String name = (String) object[1];
-				SubjectDTO subject = new SubjectDTO(id, name);
-				list.add(subject);
-			}
+			List<SubjectDTO> list = session.createQuery("SELECT new SubjectDTO(subject.id, subject.name) FROM " +
+							"SubjectDTO subject, LearningSubjectsDTO LS WHERE LS.studentId = " + studentId + " AND " +
+							"LS.subjectId = subject.id", SubjectDTO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {

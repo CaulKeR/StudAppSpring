@@ -57,8 +57,13 @@ public class MarkDTO {
 		return date;
 	}
 
-	public void setDateInYYYYMMDD(Date date){
-		this.date = date;
+	public void setDateInYYYYMMDD(java.util.Date date) {
+		if (date instanceof java.sql.Date) {
+			this.date = java.sql.Date.valueOf(((java.sql.Date) date).toLocalDate());
+		} else {
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			this.date = java.sql.Date.valueOf(sqlDate.toLocalDate());
+		}
 	}
 
 	public MarkDTO () throws IllegalArgumentException{
